@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Sheet from '../../components/Sheet.astro';
 import { companies, companyGroups } from '../../data/companies';
 
-const title = 'Tracked companies — ModelDrift';
+const title = 'Tracked companies: ModelDrift';
 const description =
   'The 10 electrical contractor software companies ModelDrift tracks across every AI answer engine question, listed neutrally with no assessments until real data exists.';
 
@@ -15,10 +15,10 @@ const groups = ['newer', 'established'] as const;
     <span class="eyebrow">Companies</span>
     <h1>Tracked companies</h1>
     <p>
-      These are the companies asked about in every <a href="/methodology">ModelDrift run</a> —
+      These are the companies asked about in every <a href="/methodology">ModelDrift run</a>,
       both indirectly, through the 20 buyer questions, and directly, through the brand-direct
       loop. The groupings below describe company stage and market position only. None of these
-      entries characterizes a company as good, bad, overpriced, or overlooked — there's no data
+      entries characterizes a company as good, bad, overpriced, or overlooked. There's no data
       yet to support that, and the project's whole premise is that unsupported characterizations
       are the problem.
     </p>
@@ -36,7 +36,7 @@ const groups = ['newer', 'established'] as const;
           <ul class="company-list">
             {items.map((c) => (
               <li>
-                <a href={`/companies/${c.slug}`}>{c.name}</a> — <span class="company-desc">{c.description}</span>
+                <a href={`/companies/${c.slug}`}>{c.name}</a>: <span class="company-desc">{c.description}</span>
               </li>
             ))}
           </ul>

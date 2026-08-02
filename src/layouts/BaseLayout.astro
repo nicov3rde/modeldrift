@@ -57,10 +57,15 @@ const ogImageUrl = new URL(ogImage, site.url).toString();
     {jsonLd.map((entry) => <JsonLd data={entry} />)}
   </head>
   <body>
-    <Nav />
-    <main>
-      <slot />
-    </main>
-    <SiteFooter />
+    <div class="page-frame">
+      <div class="page-content">
+        <Nav />
+        <main>
+          <slot />
+        </main>
+        <SiteFooter />
+      </div>
+      <div class="page-margin" aria-hidden="true"></div>
+    </div>
   </body>
 </html>

@@ -56,6 +56,36 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/*
+  Single red margin rule for the whole page, top to bottom: nav, every
+  sheet, and the footer. Both children below are placed in the same grid
+  cell so the line's align-self: stretch matches .page-content's real
+  (content-derived) height. Plain `position: absolute; top:0; bottom:0`
+  against `body` doesn't work here: body's height is auto (derived from
+  its own content), and resolving top/bottom against an auto-height
+  containing block is undefined, so browsers fall back to the viewport
+  height and the line gets clipped after one screen. Grid stretch has no
+  such restriction.
+*/
+.page-frame {
+  display: grid;
+}
+
+.page-frame > * {
+  grid-area: 1 / 1;
+}
+
+.page-margin {
+  justify-self: start;
+  align-self: stretch;
+  width: 1px;
+  margin-left: var(--margin-inset, 56px);
+  background: var(--margin-line);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 2;
+}
+
 main {
   display: block;
 }
@@ -119,17 +149,6 @@ input:focus-visible,
   opacity: 0.9;
 }
 
-.sheet__margin {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--margin-inset, 56px);
-  width: 1px;
-  background: var(--margin-line);
-  opacity: 0.55;
-  pointer-events: none;
-}
-
 .sheet__inner {
   position: relative;
   max-width: 840px;
@@ -147,7 +166,7 @@ input:focus-visible,
 }
 
 /* ----------------------------------------------------------------
-   Typography — sits on the grid
+   Typography: sits on the grid
    ---------------------------------------------------------------- */
 
 h1,
@@ -302,7 +321,7 @@ strong {
 }
 
 /* ----------------------------------------------------------------
-   Taped card — for charts/tables, empty shell for now
+   Taped card: empty shell for charts/tables, for now
    ---------------------------------------------------------------- */
 
 .taped-card {
@@ -422,8 +441,7 @@ td {
 }
 
 /* Ruling and margin line are decorative only */
-.sheet::before,
-.sheet__margin {
+.sheet::before {
   z-index: 0;
 }
 

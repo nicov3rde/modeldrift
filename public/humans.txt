@@ -1,7 +1,7 @@
 /* TEAM */
-Author: Nicholas Crowell
+Author: Nicholas Crowell (Nico Verde)
 Role: Creator, researcher, writer
-Contact: crowellnicholas1@gmail.com
+Contact: nicov3rde@gmail.com
 From: ModelDrift (https://modeldrift.tech)
 
 /* SITE */

@@ -3,9 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sheet from '../components/Sheet.astro';
 import { site } from '../data/site';
 
-const title = 'Data — ModelDrift raw dataset';
+const title = 'Data: ModelDrift raw dataset';
 const description =
-  'The full raw ModelDrift dataset — every logged AI answer engine response, coded for presence, accuracy, and sourcing — publishes as CSV and JSON after each run. First drop: September 2026.';
+  'The full raw ModelDrift dataset: every logged AI answer engine response, coded for presence, accuracy, and sourcing, publishes as CSV and JSON after each run. First drop: September 2026.';
 
 const jsonLd = [
   {
@@ -16,6 +16,7 @@ const jsonLd = [
     creator: {
       '@type': 'Person',
       name: site.author,
+      alternateName: site.authorAlt,
     },
     temporalCoverage: '2026-08/2026-12',
     measurementTechnique:
@@ -31,9 +32,9 @@ const jsonLd = [
     <h1>Raw dataset</h1>
     <p class="status-note">First drop: September 2026</p>
     <p>
-      Nothing is published here yet — the first <a href="/methodology">run</a> hasn't happened.
-      Once it has, every logged response — which engine, which question, which repetition, which
-      companies were named, the accuracy coding, and the cited sources — publishes here as both
+      Nothing is published here yet. The first <a href="/methodology">run</a> hasn't happened.
+      Once it has, every logged response (which engine, which question, which repetition, which
+      companies were named, the accuracy coding, and the cited sources) publishes here as both
       CSV and JSON, unfiltered.
     </p>
   </Sheet>
@@ -54,7 +55,7 @@ const jsonLd = [
     <p>
       A new CSV and JSON file per run, published alongside that run's essays, plus a combined file
       once there's more than one run to compare. Files are named by run date and are never edited
-      retroactively — corrections are published as a new dated file with a note on what changed
+      retroactively. Corrections are published as a new dated file with a note on what changed
       and why, so anyone who already downloaded a run can diff it.
     </p>
     <p>

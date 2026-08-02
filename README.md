@@ -5,16 +5,16 @@ Tracking how AI answer engines describe SaaS brands across buying-intent queries
 ## What this is
 
 When someone asks an AI assistant "what's the best tool for X," the answer names a
-handful of brands and describes them. That answer isn't a ranking — a brand is
+handful of brands and describes them. That answer isn't a ranking: a brand is
 either named or it isn't, and what gets said about it is either accurate or it
 isn't. This project measures both, systematically, across five engines.
 
 **Engines:** ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews
 
 **What gets measured:**
-- **Presence** — which brands get named, how often, and which never appear
-- **Accuracy** — whether descriptions, pricing, and positioning are correct
-- **Sourcing** — which pages the engines cite, and where errors originate
+- **Presence:** which brands get named, how often, and which never appear
+- **Accuracy:** whether descriptions, pricing, and positioning are correct
+- **Sourcing:** which pages the engines cite, and where errors originate
 
 ## Method
 
@@ -25,10 +25,10 @@ later runs are directly comparable to the first. Full detail, including every
 question, lives at [modeldrift.tech/methodology](https://modeldrift.tech/methodology).
 
 Question groups:
-- Problem-aware — the buyer hasn't named the category yet
-- Category-aware — actively evaluating
-- Capability-specific — questions matching a real product's exact strengths
-- Comparison and decision — e.g. "ServiceTitan alternatives"
+- Problem-aware: the buyer hasn't named the category yet
+- Category-aware: actively evaluating
+- Capability-specific: questions matching a real product's exact strengths
+- Comparison and decision: e.g. "ServiceTitan alternatives"
 
 Plus a brand-direct loop ("what is Acme," "is Acme good for electrical
 contractors") run separately against every tracked company.
@@ -54,7 +54,7 @@ August 12, 2026. First essay: September 6, 2026.
 
 ## Stack
 
-Astro (static output) on Vercel · JSON-LD structured data. Data collection
+Astro (static output) on Vercel, plus JSON-LD structured data. Data collection
 tooling is separate from this site.
 
 ## Site development
@@ -70,4 +70,4 @@ npm run build     # outputs to dist/
 
 ---
 
-Built by Nicholas Crowell.
+Built by Nicholas Crowell (Nico Verde).

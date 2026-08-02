@@ -11,7 +11,6 @@ const { as: Tag = 'section', class: className, ariaLabel } = Astro.props;
 ---
 
 <Tag class:list={['sheet', className]} aria-label={ariaLabel}>
-  <div class="sheet__margin" aria-hidden="true"></div>
   <div class="sheet__inner">
     <slot />
   </div>

@@ -4,11 +4,12 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer sheet">
-  <div class="sheet__margin" aria-hidden="true"></div>
   <div class="site-footer__inner">
     <p>
       ModelDrift is written by <span itemscope itemtype="https://schema.org/Person"
-        ><span itemprop="name">{site.author}</span></span
+        ><span itemprop="name">{site.author}</span> (<span itemprop="alternateName"
+          >{site.authorAlt}</span
+        >)</span
       >. <a href="/about">About this project</a> · <a href="/humans.txt">humans.txt</a> · <a
         href={`mailto:${site.email}`}>{site.email}</a
       >

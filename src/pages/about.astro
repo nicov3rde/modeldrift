@@ -3,15 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sheet from '../components/Sheet.astro';
 import { site } from '../data/site';
 
-const title = 'About — Nicholas Crowell / ModelDrift';
+const title = `About: ${site.author} (${site.authorAlt}) / ModelDrift`;
 const description =
-  "Nicholas Crowell built ModelDrift, a research project tracking how AI answer engines describe software brands. Available for product marketing and content roles from January 2027.";
+  "Nicholas Crowell (Nico Verde) built ModelDrift, a research project tracking how AI answer engines describe software brands. Available for product marketing and content roles from January 2027.";
 
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: site.author,
+    alternateName: site.authorAlt,
     url: `${site.url}/about`,
     email: site.email,
     jobTitle: 'Creator, ModelDrift',
@@ -28,10 +29,10 @@ const jsonLd = [
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
   <Sheet as="article">
     <span class="eyebrow">About</span>
-    <h1>Nicholas Crowell</h1>
+    <h1>{site.author} ({site.authorAlt})</h1>
     <p>
       <!-- TODO(nicholas): replace with your one-paragraph bio. Keeping this
-           honest and minimal until you supply the real copy — see the
+           honest and minimal until you supply the real copy. See the
            project brief for what this paragraph should cover. -->
       I'm building ModelDrift: a research project that asks five AI answer engines the same buyer
       questions about electrical contractor software, repeatedly, and tracks what they say. Full

@@ -12,7 +12,7 @@ export function getStaticPaths() {
 
 const { company } = Astro.props;
 
-const title = `${company.name} — ModelDrift`;
+const title = `${company.name}: ModelDrift`;
 const description = `${company.name}: ${company.description} Presence, accuracy, and sourcing data from ModelDrift's AI answer engine tracking lands here in September 2026.`;
 ---
 
@@ -24,7 +24,7 @@ const description = `${company.name}: ${company.description} Presence, accuracy,
     <p>{company.description}</p>
     <p>
       This page will hold {company.name}'s presence rate across the 20 buyer questions, accuracy
-      findings from the brand-direct loop, and which sources AI answer engines cite about it —
+      findings from the brand-direct loop, and which sources AI answer engines cite about it,
       once the <a href="/methodology">first run</a> completes. Until then, this is a placeholder
       so the URL is stable and indexable.
     </p>

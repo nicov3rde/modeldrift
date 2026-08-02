@@ -3,9 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sheet from '../components/Sheet.astro';
 import { site } from '../data/site';
 
-const title = 'ModelDrift — tracking what AI answer engines say about software brands';
+const title = 'ModelDrift: tracking what AI answer engines say about software brands';
 const description =
-  'ModelDrift asks five AI answer engines the same 20 buyer questions about electrical contractor software, five times each, and tracks which companies get named, what is said about them, and what gets cited — repeated quarterly to measure drift.';
+  'ModelDrift asks five AI answer engines the same 20 buyer questions about electrical contractor software, five times each, and tracks which companies get named, what is said about them, and what gets cited. Repeated quarterly to measure drift.';
 
 const jsonLd = [
   {
@@ -17,6 +17,7 @@ const jsonLd = [
     founder: {
       '@type': 'Person',
       name: site.author,
+      alternateName: site.authorAlt,
     },
   },
 ];
@@ -28,13 +29,13 @@ const jsonLd = [
     <h1>ModelDrift</h1>
     <p>
       When someone asks an AI assistant what software to use, the answer names a handful of
-      companies and describes them — and that description is either accurate or it isn't, whether
+      companies and describes them, and that description is either accurate or it isn't, whether
       the company shows up at all or it doesn't. ModelDrift measures that, systematically, for one
       category, over time.
     </p>
     <p>
       Starting in August 2026, ModelDrift asks ChatGPT, Claude, Gemini, Perplexity, and Google AI
-      Overviews the same 20 buyer questions about electrical contractor software — each question
+      Overviews the same 20 buyer questions about electrical contractor software, each question
       five times, in a fresh session, per engine. It records which companies get named
       (<strong>presence</strong>), what's said about them and whether it's correct
       (<strong>accuracy</strong>), and which web pages the answers cite (<strong>sourcing</strong
@@ -50,14 +51,14 @@ const jsonLd = [
   <Sheet as="section">
     <h2>First results: September 2026</h2>
     <p>
-      The first run happens August 12, 2026. Nothing on this site yet reflects real findings —
-      there's no data to show. The first essay, covering presence across all five engines for the
+      The first run happens August 12, 2026. Nothing on this site yet reflects real findings.
+      There's no data to show. The first essay, covering presence across all five engines for the
       August run, publishes in September. See the <a href="/essays">essays page</a> for what's coming
       and when.
     </p>
     <p>
       The <a href="/companies">tracked companies</a> and the full raw dataset (published as CSV and
-      JSON after each run) are listed now so the project is checkable from day one — see the <a
+      JSON after each run) are listed now so the project is checkable from day one. See the <a
         href="/data">data page</a
       >.
     </p>

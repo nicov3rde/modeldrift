@@ -6,7 +6,7 @@ export type QuestionGroup = {
 
 export const questionGroups: QuestionGroup[] = [
   {
-    heading: 'Problem-aware — the buyer hasn’t named the category yet',
+    heading: 'Problem-aware: the buyer hasn’t named the category yet',
     intro: 'Questions a contractor might ask before they know software like this exists.',
     questions: [
       'How do I stop losing track of jobs and invoices in my electrical business',
@@ -16,7 +16,7 @@ export const questionGroups: QuestionGroup[] = [
     ],
   },
   {
-    heading: 'Category-aware — actively evaluating',
+    heading: 'Category-aware: actively evaluating',
     intro: 'Questions from someone who knows a software category exists and is comparing options.',
     questions: [
       'Best software for electrical contractors',
@@ -28,7 +28,7 @@ export const questionGroups: QuestionGroup[] = [
     ],
   },
   {
-    heading: 'Capability-specific — questions that describe a real product’s exact strengths',
+    heading: 'Capability-specific: questions that describe a real product’s exact strengths',
     intro: 'Questions phrased around specific features, testing whether engines surface the products built for them.',
     questions: [
       'AI estimating software for electricians',

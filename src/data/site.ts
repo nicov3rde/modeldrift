@@ -3,8 +3,8 @@ export const site = {
   domain: 'modeldrift.tech',
   url: 'https://modeldrift.tech',
   author: 'Nicholas Crowell',
-  // TODO(nicholas): confirm the contact address to publish.
-  email: 'crowellnicholas1@gmail.com',
+  authorAlt: 'Nico Verde',
+  email: 'nicov3rde@gmail.com',
   defaultDescription:
     'ModelDrift asks five AI answer engines the same buyer questions about electrical contractor software, repeatedly, and tracks which companies get named, what is said about them, and what gets cited.',
   ogImage: '/og-default.png',
