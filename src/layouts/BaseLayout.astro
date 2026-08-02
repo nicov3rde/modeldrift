@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown>[];
+  ogImage?: string;
+}
+
+const { title, description, jsonLd = [], ogImage = site.ogImage } = Astro.props;
+
+const rawPath = Astro.url.pathname;
+const cleanPath = rawPath !== '/' && rawPath.endsWith('/') ? rawPath.slice(0, -1) : rawPath;
+const canonicalUrl = new URL(cleanPath, site.url).toString();
+const ogImageUrl = new URL(ogImage, site.url).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!--
+      Google Search Console verification.
+      Method: HTML meta tag. Replace the content value below with the token
+      GSC gives you when you add modeldrift.tech as a property (Settings ->
+      Ownership verification -> HTML tag). Leave the tag in place permanently;
+      GSC re-checks it periodically.
+    -->
+    <meta name="google-site-verification" content="REPLACE_WITH_GSC_TOKEN" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    {site.twitterHandle && <meta name="twitter:site" content={site.twitterHandle} />}
+
+    {jsonLd.map((entry) => <JsonLd data={entry} />)}
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

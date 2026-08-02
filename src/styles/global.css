@@ -1,0 +1,441 @@
+@import '@fontsource/patrick-hand/400.css';
+@import '@fontsource/lora/400.css';
+@import '@fontsource/lora/400-italic.css';
+@import '@fontsource/lora/600.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+/*
+  Baseline grid: every line-height, vertical margin, and vertical padding
+  is this unit or an integer multiple of it. This is what keeps text sitting
+  on the ruled lines. Do not introduce an arbitrary vertical value anywhere.
+*/
+:root {
+  --unit: 30px;
+
+  --paper: #fbfbf9;
+  --paper-edge: #e8e6de;
+  --rule: #c9d6ea;
+  --rule-strong: #aebede;
+  --margin-line: #d6635a;
+  --ink: #23241f;
+  --ink-soft: #4b4c44;
+  --ink-faint: #75766c;
+  --link: #2f4f8f;
+  --link-visited: #5b3f8f;
+  --focus: #2f4f8f;
+  --tape: rgba(255, 255, 255, 0.55);
+
+  --font-hand: 'Patrick Hand', 'Segoe UI', sans-serif;
+  --font-body: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
+
+  --measure: 68ch;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: var(--unit);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  display: block;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* ----------------------------------------------------------------
+   Sheet: one ruled "page" of paper. Sections are stacked sheets,
+   separated by a hairline + shadow + gap, never an <hr>.
+   ---------------------------------------------------------------- */
+
+.sheet {
+  position: relative;
+  background: var(--paper);
+  padding: calc(var(--unit) * 2) 0 calc(var(--unit) * 2);
+  box-shadow: 0 1px 0 var(--paper-edge);
+}
+
+.sheet + .sheet {
+  margin-top: calc(var(--unit) / 2);
+  border-top: 1px solid var(--paper-edge);
+}
+
+.sheet::before {
+  /* the ruled lines, locked to the baseline unit. Purely decorative:
+     no text content, so it's already invisible to assistive tech. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--unit) - 1px),
+    var(--rule) calc(var(--unit) - 1px),
+    var(--rule) var(--unit)
+  );
+  background-position: 0 calc(var(--unit) * 1.5);
+  opacity: 0.9;
+}
+
+.sheet__margin {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--margin-inset, 56px);
+  width: 1px;
+  background: var(--margin-line);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.sheet__inner {
+  position: relative;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 0 var(--unit) 0 calc(var(--margin-inset, 56px) + var(--unit));
+}
+
+@media (max-width: 640px) {
+  :root {
+    --margin-inset: 30px;
+  }
+  .sheet__inner {
+    padding: 0 calc(var(--unit) * 0.75) 0 calc(var(--margin-inset, 30px) + var(--unit) * 0.6);
+  }
+}
+
+/* ----------------------------------------------------------------
+   Typography — sits on the grid
+   ---------------------------------------------------------------- */
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-hand);
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0 0 var(--unit);
+  line-height: calc(var(--unit) * 2);
+}
+
+h1 {
+  font-size: 2.6rem;
+  line-height: calc(var(--unit) * 2);
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 2rem;
+  line-height: calc(var(--unit) * 2);
+  margin-top: calc(var(--unit) * 2);
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: var(--unit);
+  margin-top: calc(var(--unit) * 2);
+  margin-bottom: var(--unit);
+}
+
+p,
+ul,
+ol,
+blockquote,
+table,
+.taped-card {
+  margin: 0 0 var(--unit);
+  max-width: var(--measure);
+}
+
+ul,
+ol {
+  padding-left: calc(var(--unit) * 1.1);
+}
+
+li {
+  line-height: var(--unit);
+}
+
+li + li {
+  margin-top: 0;
+}
+
+blockquote {
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  line-height: var(--unit);
+  border-left: 2px solid var(--margin-line);
+  padding-left: var(--unit);
+  color: var(--ink-soft);
+  font-style: normal;
+}
+
+small,
+.annotation {
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  line-height: var(--unit);
+}
+
+code,
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+strong {
+  font-weight: 600;
+}
+
+/* ----------------------------------------------------------------
+   Nav
+   ---------------------------------------------------------------- */
+
+.site-nav {
+  position: relative;
+}
+
+.site-nav__inner {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: var(--unit) var(--unit) 0 calc(var(--margin-inset, 56px) + var(--unit));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 calc(var(--unit) * 0.8);
+}
+
+.site-nav__brand {
+  font-family: var(--font-hand);
+  font-size: 1.7rem;
+  line-height: var(--unit);
+  color: var(--ink);
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.site-nav__links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 calc(var(--unit) * 0.7);
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__links a {
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  line-height: var(--unit);
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+
+.site-nav__links a[aria-current='page'] {
+  color: var(--ink);
+  border-bottom: 2px solid var(--margin-line);
+}
+
+@media (max-width: 640px) {
+  .site-nav__inner {
+    padding: var(--unit) calc(var(--unit) * 0.75) 0 calc(30px + var(--unit) * 0.6);
+  }
+}
+
+/* ----------------------------------------------------------------
+   Footer
+   ---------------------------------------------------------------- */
+
+.site-footer__inner {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: var(--unit) var(--unit) calc(var(--unit) * 2) calc(var(--margin-inset, 56px) + var(--unit));
+}
+
+.site-footer p {
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+}
+
+/* ----------------------------------------------------------------
+   Taped card — for charts/tables, empty shell for now
+   ---------------------------------------------------------------- */
+
+.taped-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e3e3de;
+  border-radius: 2px;
+  padding: calc(var(--unit) * 0.8) var(--unit);
+  transform: rotate(-0.6deg);
+  box-shadow: 0 6px 18px -8px rgba(20, 20, 15, 0.35), 0 1px 0 rgba(20, 20, 15, 0.06);
+}
+
+.taped-card::before,
+.taped-card::after {
+  content: '';
+  position: absolute;
+  width: 46px;
+  height: 18px;
+  background: var(--tape);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  top: -10px;
+}
+
+.taped-card::before {
+  left: 18px;
+  transform: rotate(-4deg);
+}
+
+.taped-card::after {
+  right: 18px;
+  transform: rotate(3deg);
+}
+
+.taped-card__placeholder {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+  border: 1px dashed #d8d8d2;
+  padding: calc(var(--unit) * 1.2) var(--unit);
+  text-align: center;
+  transform: rotate(0.6deg);
+}
+
+/* ----------------------------------------------------------------
+   Utility
+   ---------------------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: var(--unit);
+  margin: 0 0 calc(var(--unit) / 2);
+  display: block;
+}
+
+.status-note {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  padding: 2px 8px;
+  line-height: 1.6;
+}
+
+.company-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--unit);
+}
+
+.company-list li {
+  border-bottom: 1px solid var(--paper-edge);
+  padding: calc(var(--unit) * 0.5) 0;
+  line-height: var(--unit);
+}
+
+.company-list li:first-child {
+  border-top: 1px solid var(--paper-edge);
+}
+
+.company-list a {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.company-list .company-desc {
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+}
+
+.question-list {
+  list-style: decimal;
+  padding-left: calc(var(--unit) * 1.2);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+th,
+td {
+  text-align: left;
+  border-bottom: 1px solid var(--paper-edge);
+  padding: calc(var(--unit) * 0.35) calc(var(--unit) * 0.5) calc(var(--unit) * 0.35) 0;
+  line-height: var(--unit);
+}
+
+/* Ruling and margin line are decorative only */
+.sheet::before,
+.sheet__margin {
+  z-index: 0;
+}
+
+.sheet__inner {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

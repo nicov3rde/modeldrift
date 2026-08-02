@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sheet from '../components/Sheet.astro';
+import { site } from '../data/site';
+import { questionGroups, totalQuestionCount, brandDirectQuestions } from '../data/questions';
+
+const title = 'Methodology — how ModelDrift asks and scores AI answer engines';
+const description =
+  'The exact questions, repetition count, session handling, run schedule, and scoring definitions ModelDrift uses to measure presence, accuracy, and sourcing across five AI answer engines.';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'ModelDrift: AI answer engine responses on electrical contractor software',
+    description: site.defaultDescription,
+    creator: {
+      '@type': 'Person',
+      name: site.author,
+    },
+    temporalCoverage: '2026-08/2026-12',
+    measurementTechnique:
+      'Manual and scripted querying of ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews with a frozen set of 20 buyer-intent questions plus brand-direct questions per tracked company, 5 repetitions per question per engine in a fresh session each time, coded for company presence, claim accuracy, and cited sources.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <Sheet as="section">
+    <span class="eyebrow">Methodology</span>
+    <h1>How this is measured</h1>
+    <p>
+      This page exists to be checked. If the method is unclear or looks gameable, that's a
+      problem with the method, not with your reading of it — <a href={`mailto:${site.email}`}
+        >email me</a
+      > and I'll fix it.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>The five engines</h2>
+    <p>Every question is asked against all five of the following, unmodified:</p>
+    <ul>
+      <li>ChatGPT</li>
+      <li>Claude</li>
+      <li>Gemini</li>
+      <li>Perplexity</li>
+      <li>Google AI Overviews</li>
+    </ul>
+    <p>
+      No custom instructions, memory, or account personalization beyond what's unavoidable for a
+      logged-in session. Where an engine offers a logged-out or incognito mode, that's used to
+      keep runs comparable across repetitions.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>Repetitions and sessions</h2>
+    <p>
+      Each of the 20 questions is asked <strong>5 times per engine</strong>, and each of those 5
+      repetitions starts in a <strong>fresh session</strong> — new chat, no prior context in that
+      session. This is because a single answer from a single session says nothing about whether an
+      engine reliably names a company or whether that run was noise. Presence is reported as a rate
+      across the 5 repetitions (e.g. "named in 4 of 5 runs"), not as a single yes/no.
+    </p>
+    <p>
+      That's {totalQuestionCount} questions times 5 engines times 5 repetitions: {totalQuestionCount *
+        5 *
+        5} logged responses per run, before the brand-direct loop below.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>The three measures</h2>
+    <ul>
+      <li>
+        <strong>Presence</strong> — which companies are named in the response, and how often across
+        the 5 repetitions. A company that's never named for a given question is recorded as absent,
+        not skipped.
+      </li>
+      <li>
+        <strong>Accuracy</strong> — for each company named, whether what the engine says about it (pricing,
+        feature claims, positioning, who it's for) is verifiably correct against that company's own
+        current public materials. Errors are logged with what was said and what's actually true.
+      </li>
+      <li>
+        <strong>Sourcing</strong> — which URLs the engine cites or links to (where the engine exposes
+        citations at all), and, where an inaccurate claim can be traced to a specific source, which
+        page it came from.
+      </li>
+    </ul>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>The 20 questions</h2>
+    <p>
+      Grouped by where the buyer is in their decision. The full set is frozen for the life of the
+      project — see below for why.
+    </p>
+    {
+      questionGroups.map((group) => (
+        <Fragment>
+          <h3>{group.heading}</h3>
+          <p class="annotation">{group.intro}</p>
+          <ol class="question-list">
+            {group.questions.map((q) => (
+              <li>{q}</li>
+            ))}
+          </ol>
+        </Fragment>
+      ))
+    }
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>Brand-direct loop</h2>
+    <p>
+      Separately from the 20 questions above, every <a href="/companies">tracked company</a> is asked
+      about directly, by name, with the same 5-repetitions-per-engine, fresh-session rule:
+    </p>
+    <ul>
+      {brandDirectQuestions.map((q) => <li class="mono">{q}</li>)}
+    </ul>
+    <p>
+      This isolates accuracy from presence: a company can be described correctly when asked about
+      directly while still never surfacing in the category questions above, and that gap is itself
+      a finding.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>Run schedule</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Run</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>August 12, 2026</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>October 2026</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>December 2026</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Three runs across five months against an identical question set turn single snapshots into a
+      trend: whether a company's presence is stable, growing, or disappearing, and whether
+      accuracy improves as engines update.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>Why the question set is frozen</h2>
+    <p>
+      If the questions changed between runs, any difference in results could come from the new
+      questions instead of from the engines changing. Freezing the set is what makes "run 2 vs.
+      run 1" a comparison of the same thing measured twice, rather than two different
+      measurements. The tradeoff is real: the set can't be expanded or corrected mid-project
+      without breaking that comparability, so the 20 questions and the company list above are
+      final for August, October, and December 2026. Anything learned about gaps in the question
+      set gets written up and applied to a future, separately versioned project — not folded back
+      into this one.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>What this doesn't claim</h2>
+    <p>
+      This isn't a ranking, a benchmark of model quality, or an endorsement of any company. A
+      company being named more often isn't necessarily "better" — it may just be better indexed,
+      more heavily reviewed, or older. The <a href="/companies">companies page</a> lists what's tracked
+      without characterizing any of them, and it stays that way until there's data to back a claim
+      up.
+    </p>
+    <p>
+      The full raw responses, coded by hand against the definitions above, publish as CSV and JSON
+      after each run — see <a href="/data">the data page</a>.
+    </p>
+  </Sheet>
+</BaseLayout>

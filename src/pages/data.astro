@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sheet from '../components/Sheet.astro';
+import { site } from '../data/site';
+
+const title = 'Data — ModelDrift raw dataset';
+const description =
+  'The full raw ModelDrift dataset — every logged AI answer engine response, coded for presence, accuracy, and sourcing — publishes as CSV and JSON after each run. First drop: September 2026.';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'ModelDrift raw response dataset',
+    description: site.defaultDescription,
+    creator: {
+      '@type': 'Person',
+      name: site.author,
+    },
+    temporalCoverage: '2026-08/2026-12',
+    measurementTechnique:
+      'Logged responses from ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews to a frozen 20-question set plus brand-direct questions, 5 repetitions per question per engine, coded for company presence, claim accuracy, and cited sources. See /methodology for full detail.',
+    // distribution is added once the first CSV/JSON files are published.
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <Sheet as="section">
+    <span class="eyebrow">Data</span>
+    <h1>Raw dataset</h1>
+    <p class="status-note">First drop: September 2026</p>
+    <p>
+      Nothing is published here yet — the first <a href="/methodology">run</a> hasn't happened.
+      Once it has, every logged response — which engine, which question, which repetition, which
+      companies were named, the accuracy coding, and the cited sources — publishes here as both
+      CSV and JSON, unfiltered.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>What will be in it</h2>
+    <ul>
+      <li>One row per (question, engine, repetition), for all 20 questions and the brand-direct loop</li>
+      <li>Engine, model/version where disclosed, run date, and session identifier</li>
+      <li>Every company named in that response, in the order it appeared</li>
+      <li>Accuracy coding for each named company, with the specific claim and what's wrong, if anything</li>
+      <li>Every cited or linked source URL, where the engine exposes one</li>
+    </ul>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>Format and cadence</h2>
+    <p>
+      A new CSV and JSON file per run, published alongside that run's essays, plus a combined file
+      once there's more than one run to compare. Files are named by run date and are never edited
+      retroactively — corrections are published as a new dated file with a note on what changed
+      and why, so anyone who already downloaded a run can diff it.
+    </p>
+    <p>
+      No signup or paywall. Licensing terms will be posted alongside the first file drop.
+    </p>
+  </Sheet>
+</BaseLayout>

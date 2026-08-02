@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://modeldrift.tech/sitemap-index.xml

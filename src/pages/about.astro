@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sheet from '../components/Sheet.astro';
+import { site } from '../data/site';
+
+const title = 'About — Nicholas Crowell / ModelDrift';
+const description =
+  "Nicholas Crowell built ModelDrift, a research project tracking how AI answer engines describe software brands. Available for product marketing and content roles from January 2027.";
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: site.author,
+    url: `${site.url}/about`,
+    email: site.email,
+    jobTitle: 'Creator, ModelDrift',
+    knowsAbout: [
+      'AI answer engine optimization',
+      'Generative engine optimization',
+      'Product marketing',
+      'Content strategy',
+    ],
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <Sheet as="article">
+    <span class="eyebrow">About</span>
+    <h1>Nicholas Crowell</h1>
+    <p>
+      <!-- TODO(nicholas): replace with your one-paragraph bio. Keeping this
+           honest and minimal until you supply the real copy — see the
+           project brief for what this paragraph should cover. -->
+      I'm building ModelDrift: a research project that asks five AI answer engines the same buyer
+      questions about electrical contractor software, repeatedly, and tracks what they say. Full
+      bio going up alongside the first essay in September 2026.
+    </p>
+    <p>
+      I'm available for product marketing and content roles starting <strong
+        >January 2027</strong
+      >.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>Work with me</h2>
+    <p>
+      The clearest signal of how I think and write is <a href="/methodology">the methodology</a> and,
+      from September, <a href="/essays">the essays</a> themselves.
+    </p>
+    <p>
+      Get in touch: <a href={`mailto:${site.email}`}>{site.email}</a>
+      <!-- TODO(nicholas): add LinkedIn / X links here once confirmed -->
+    </p>
+  </Sheet>
+</BaseLayout>

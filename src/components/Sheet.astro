@@ -1,0 +1,18 @@
+---
+// One ruled "page" of paper. Stack multiple <Sheet> components to get the
+// page-break-between-sections effect described in the design brief.
+interface Props {
+  as?: 'section' | 'div' | 'article';
+  class?: string;
+  ariaLabel?: string;
+}
+
+const { as: Tag = 'section', class: className, ariaLabel } = Astro.props;
+---
+
+<Tag class:list={['sheet', className]} aria-label={ariaLabel}>
+  <div class="sheet__margin" aria-hidden="true"></div>
+  <div class="sheet__inner">
+    <slot />
+  </div>
+</Tag>

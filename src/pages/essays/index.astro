@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sheet from '../../components/Sheet.astro';
+
+const title = 'Essays — ModelDrift';
+const description =
+  'ModelDrift publishes one essay and video per major finding, starting with presence results from the August 2026 run. No essays are live yet — first one ships September 6, 2026.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Sheet as="section">
+    <span class="eyebrow">Essays</span>
+    <h1>Essays</h1>
+    <p>
+      Five essays, each with an accompanying video, walk through what the <a href="/methodology"
+        >runs</a
+      > actually found. None are published yet — the first run hasn't happened. This page will list
+      them here as they ship.
+    </p>
+  </Sheet>
+
+  <Sheet as="section">
+    <h2>First essay: September 6, 2026</h2>
+    <p>
+      The first essay covers <strong>presence</strong> from the August 12, 2026 run: across all
+      five engines and five repetitions per question, which of the <a href="/companies"
+        >tracked companies</a
+      > actually get named for the 20 buyer questions, which never come up at all, and whether that
+      breaks down differently for problem-aware questions versus head-to-head comparisons. The video
+      walks through the same findings for anyone who'd rather watch than read.
+    </p>
+    <p>
+      Accuracy and sourcing findings from the same run follow as separate essays later in
+      September, once the coding pass on citations and claims is complete.
+    </p>
+  </Sheet>
+</BaseLayout>

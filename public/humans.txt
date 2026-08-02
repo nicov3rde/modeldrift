@@ -1,0 +1,13 @@
+/* TEAM */
+Author: Nicholas Crowell
+Role: Creator, researcher, writer
+Contact: crowellnicholas1@gmail.com
+From: ModelDrift (https://modeldrift.tech)
+
+/* SITE */
+Last update: 2026/08/02
+Language: English
+Doctype: HTML5
+Standards: HTML5, JSON-LD
+Components: Astro
+Software: VS Code, Claude Code
