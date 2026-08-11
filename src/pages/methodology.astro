@@ -2,7 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Sheet from '../components/Sheet.astro';
 import { site } from '../data/site';
-import { questionGroups, totalQuestionCount, brandDirectQuestions } from '../data/questions';
+import { questionGroups, totalQuestionCount, freezeDate, segmentSkewNote, brandDirectQuestions } from '../data/questions';
+
+const freezeDateDisplay = new Date(`${freezeDate}T00:00:00Z`).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
 
 const title = 'Methodology: how ModelDrift asks and scores AI answer engines';
 const description =
@@ -21,7 +28,7 @@ const jsonLd = [
     },
     temporalCoverage: '2026-08/2026-12',
     measurementTechnique:
-      'Manual and scripted querying of ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews with a frozen set of 20 buyer-intent questions plus brand-direct questions per tracked company, 5 repetitions per question per engine in a fresh session each time, coded for company presence, claim accuracy, and cited sources.',
+      `Scripted browser-driven querying of ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews with a frozen set of ${totalQuestionCount} buyer-intent questions plus a brand-direct loop per tracked company, 5 repetitions per question per engine (3 for brand-direct) in a fresh session each time, coded for company presence, claim accuracy, and cited sources.`,
   },
 ];
 ---
@@ -57,17 +64,18 @@ const jsonLd = [
   <Sheet as="section">
     <h2>Repetitions and sessions</h2>
     <p>
-      Each of the 20 questions is asked <strong>5 times per engine</strong>, and each of those 5
-      repetitions starts in a <strong>fresh session</strong>: new chat, no prior context in that
-      session. This is because a single answer from a single session says nothing about whether an
-      engine reliably names a company or whether that run was noise. Presence is reported as a rate
-      across the 5 repetitions (e.g. "named in 4 of 5 runs"), not as a single yes/no.
+      Each of the {totalQuestionCount} questions is asked <strong>5 times per engine</strong>, and
+      each of those 5 repetitions starts in a <strong>fresh session</strong>: new chat, no prior
+      context in that session. This is because a single answer from a single session says nothing
+      about whether an engine reliably names a company or whether that run was noise. Presence is
+      reported as a rate across the 5 repetitions (e.g. "named in 4 of 5 runs"), not as a single
+      yes/no.
     </p>
     <p>
-      That's {totalQuestionCount} questions times 5 engines times 5 repetitions: {totalQuestionCount *
-        5 *
-        5} logged responses per run, before the brand-direct loop below.
+      That's {totalQuestionCount} questions times 5 engines times 5 repetitions:{' '}
+      {totalQuestionCount * 5 * 5} logged responses per run, before the brand-direct loop below.
     </p>
+    <p class="annotation">{segmentSkewNote}</p>
   </Sheet>
 
   <Sheet as="section">
@@ -92,19 +100,24 @@ const jsonLd = [
   </Sheet>
 
   <Sheet as="section">
-    <h2>The 20 questions</h2>
+    <h2>The {totalQuestionCount} questions</h2>
     <p>
-      Grouped by where the buyer is in their decision. The full set is frozen for the life of the
-      project. See below for why.
+      Grouped by where the buyer is in their decision, bucket A through D. The full set is frozen
+      for the life of the project. See below for why.
     </p>
     {
       questionGroups.map((group) => (
         <Fragment>
-          <h3>{group.heading}</h3>
-          <p class="annotation">{group.intro}</p>
+          <h3>
+            Bucket {group.id}: {group.heading}
+          </h3>
+          {group.intro && <p class="annotation">{group.intro}</p>}
           <ol class="question-list">
-            {group.questions.map((q) => (
-              <li>{q}</li>
+            {group.questions.map((question) => (
+              <li>
+                {question.text}
+                {question.note && <p class="annotation">{question.note}</p>}
+              </li>
             ))}
           </ol>
         </Fragment>
@@ -115,8 +128,9 @@ const jsonLd = [
   <Sheet as="section">
     <h2>Brand-direct loop</h2>
     <p>
-      Separately from the 20 questions above, every <a href="/companies">tracked company</a> is asked
-      about directly, by name, with the same 5-repetitions-per-engine, fresh-session rule:
+      Separately from the {totalQuestionCount} questions above, every <a href="/companies">tracked
+        company</a> is asked about directly, by name, using the two questions below. Each runs 3
+      repetitions per engine, same fresh-session rule, not counted toward the {totalQuestionCount} total:
     </p>
     <ul>
       {brandDirectQuestions.map((q) => <li class="mono">{q}</li>)}
@@ -166,10 +180,10 @@ const jsonLd = [
       questions instead of from the engines changing. Freezing the set is what makes "run 2 vs.
       run 1" a comparison of the same thing measured twice, rather than two different
       measurements. The tradeoff is real: the set can't be expanded or corrected mid-project
-      without breaking that comparability, so the 20 questions and the company list above are
-      final for August, October, and December 2026. Anything learned about gaps in the question
-      set gets written up and applied to a future, separately versioned project, not folded back
-      into this one.
+      without breaking that comparability, so the {totalQuestionCount} questions and the company
+      list above are final for August, October, and December 2026, frozen as of {freezeDateDisplay}.
+      Anything learned about gaps in the question set gets written up and applied to a future,
+      separately versioned project, not folded back into this one.
     </p>
   </Sheet>
 

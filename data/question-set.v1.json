@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "freeze_date": "2026-08-05",
+  "freeze_note": "After this date: no wording changes, no additions, no removals. Runs in August, October, and December must be character-for-character identical against this file or the longitudinal comparison is void. A future revision creates question-set.v2.json rather than editing this one in place.",
+  "engines": ["chatgpt", "claude", "gemini", "perplexity", "ai_overview"],
+  "repetitions": {
+    "main": 5,
+    "brand_direct": 3
+  },
+  "buckets": [
+    {
+      "id": "A",
+      "heading": "Problem-aware",
+      "subheading": "the buyer hasn’t named the category yet",
+      "note": "Does the category get recommended at all, or does the model suggest a spreadsheet?",
+      "questions": [
+        { "id": "A1", "text": "How do I stop losing track of jobs and invoices in my electrical business" },
+        { "id": "A2", "text": "How can a small electrical contractor schedule jobs and dispatch techs" },
+        { "id": "A3", "text": "How do electricians write estimates faster" },
+        { "id": "A4", "text": "What's the best way to handle missed customer calls as an electrician" }
+      ]
+    },
+    {
+      "id": "B",
+      "heading": "Category-aware",
+      "subheading": "actively evaluating",
+      "note": "The core presence test. Who makes the shortlist.",
+      "questions": [
+        { "id": "B5", "text": "Best software for electrical contractors" },
+        { "id": "B6", "text": "Best field service software for a small electrical shop" },
+        { "id": "B7", "text": "What software do electricians use to run their business" },
+        { "id": "B8", "text": "Best electrical contractor software for a 5-person shop" },
+        { "id": "B9", "text": "Best software for a solo electrician" },
+        { "id": "B10", "text": "Best electrical estimating software" }
+      ]
+    },
+    {
+      "id": "C",
+      "heading": "Capability-specific",
+      "subheading": "deserve-to-be-named tests",
+      "note": "Each describes a tracked company's actual product. If an incumbent gets named instead, that's the finding.",
+      "questions": [
+        { "id": "C11", "text": "AI estimating software for electricians" },
+        { "id": "C12", "text": "Software built specifically for electrical contractors" },
+        { "id": "C13", "text": "AI phone answering service for electrical contractors" },
+        { "id": "C14", "text": "Electrical contractor software with load calculations and panel schedules" },
+        { "id": "C15", "text": "Software for electrical contractors that handles permits and code compliance" }
+      ]
+    },
+    {
+      "id": "D",
+      "heading": "Comparison and decision",
+      "subheading": "where a challenger has its best structural shot",
+      "questions": [
+        { "id": "D16", "text": "ServiceTitan alternatives" },
+        { "id": "D17", "text": "Cheaper alternative to ServiceTitan for electricians" },
+        { "id": "D18", "text": "Jobber vs Housecall Pro for electrical work" },
+        { "id": "D19", "text": "Is ServiceTitan worth it for a small electrical contractor" },
+        { "id": "D20", "text": "How much does electrical contractor software cost" },
+        {
+          "id": "D21",
+          "text": "I'm outgrowing Jobber, what should an electrical contractor upgrade to",
+          "note": "The upgrade moment is where a challenger has its single best structural shot at being named: the buyer has already rejected the entry-level option and is explicitly asking to be told something new. If the models answer with ServiceTitan every time, that's a finding in its own right: the ladder has exactly two rungs."
+        }
+      ]
+    }
+  ],
+  "segment_skew_note": "This question set deliberately over-samples solo and small-shop buyers. That's where the tracked challengers position themselves, and it's the segment where an AI recommendation can plausibly drive an actual purchase: smaller operators buy self-serve off published pricing, while larger contractors buy through demos, quotes, and procurement, where an AI answer influences a shortlist at most. The skew is a choice, not an oversight.",
+  "brand_direct": {
+    "note": "Run separately from the 21 above; not counted in that total.",
+    "templates": [
+      { "id": "what-is", "text": "What is {company}" },
+      { "id": "good-for-electrical", "text": "Is {company} good for electrical contractors" }
+    ],
+    "companies": [
+      { "slug": "elyos-ai", "name": "Elyos AI" },
+      { "slug": "acewatt", "name": "AceWatt" },
+      { "slug": "quoteiq", "name": "QuoteIQ" },
+      { "slug": "serviceagent", "name": "ServiceAgent" },
+      { "slug": "tradefix", "name": "TradeFix" },
+      { "slug": "fieldpulse", "name": "FieldPulse" },
+      { "slug": "servicetitan", "name": "ServiceTitan" },
+      { "slug": "housecall-pro", "name": "Housecall Pro" },
+      { "slug": "jobber", "name": "Jobber" },
+      { "slug": "fieldedge", "name": "FieldEdge" }
+    ]
+  }
+}

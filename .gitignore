@@ -5,6 +5,17 @@ npm-debug.log*
 .env
 .env.production
 
+# ModelDrift collector - real login sessions, credentials, and raw
+# HTML/screenshot captures never belong in git. data/runs/*.jsonl and
+# data/exports/*.csv (the actual dataset) ARE tracked - see collector/README.md.
+collector/browser_profile/
+collector/raw/
+collector/debug/
+collector/scratch/
+collector/.gcp/
+collector/run_config.json
+collector/__pycache__/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -223,3 +234,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+.vercel
+.env*

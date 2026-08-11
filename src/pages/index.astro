@@ -2,10 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Sheet from '../components/Sheet.astro';
 import { site } from '../data/site';
+import { totalQuestionCount } from '../data/questions';
 
 const title = 'ModelDrift: tracking what AI answer engines say about software brands';
-const description =
-  'ModelDrift asks five AI answer engines the same 20 buyer questions about electrical contractor software, five times each, and tracks which companies get named, what is said about them, and what gets cited. Repeated quarterly to measure drift.';
+const description = `ModelDrift asks five AI answer engines the same ${totalQuestionCount} buyer questions about electrical contractor software, five times each, and tracks which companies get named, what is said about them, and what gets cited. The identical question set runs again in October and December 2026 to measure drift.`;
 
 const jsonLd = [
   {
@@ -35,8 +35,8 @@ const jsonLd = [
     </p>
     <p>
       Starting in August 2026, ModelDrift asks ChatGPT, Claude, Gemini, Perplexity, and Google AI
-      Overviews the same 20 buyer questions about electrical contractor software, each question
-      five times, in a fresh session, per engine. It records which companies get named
+      Overviews the same {totalQuestionCount} buyer questions about electrical contractor software,
+      each question five times, in a fresh session, per engine. It records which companies get named
       (<strong>presence</strong>), what's said about them and whether it's correct
       (<strong>accuracy</strong>), and which web pages the answers cite (<strong>sourcing</strong
       >). The identical question set runs again in October and December 2026, so changes between

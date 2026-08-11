@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Sheet from '../components/Sheet.astro';
 import { site } from '../data/site';
+import { totalQuestionCount } from '../data/questions';
 
 const title = 'Data: ModelDrift raw dataset';
 const description =
@@ -20,7 +21,7 @@ const jsonLd = [
     },
     temporalCoverage: '2026-08/2026-12',
     measurementTechnique:
-      'Logged responses from ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews to a frozen 20-question set plus brand-direct questions, 5 repetitions per question per engine, coded for company presence, claim accuracy, and cited sources. See /methodology for full detail.',
+      `Logged responses from ChatGPT, Claude, Gemini, Perplexity, and Google AI Overviews to a frozen ${totalQuestionCount}-question set plus brand-direct questions, 5 repetitions per question per engine (3 for brand-direct), coded for company presence, claim accuracy, and cited sources. See /methodology for full detail.`,
     // distribution is added once the first CSV/JSON files are published.
   },
 ];
@@ -42,7 +43,7 @@ const jsonLd = [
   <Sheet as="section">
     <h2>What will be in it</h2>
     <ul>
-      <li>One row per (question, engine, repetition), for all 20 questions and the brand-direct loop</li>
+      <li>One row per (question, engine, repetition), for all {totalQuestionCount} questions and the brand-direct loop</li>
       <li>Engine, model/version where disclosed, run date, and session identifier</li>
       <li>Every company named in that response, in the order it appeared</li>
       <li>Accuracy coding for each named company, with the specific claim and what's wrong, if anything</li>

@@ -1,0 +1,13 @@
+{
+  "_comment": "Copy this to run_config.json (gitignored) and fill in location before the first real run. run_config.json is what the runner actually reads; this template is the committed, shareable shape so October/December start from the same frozen rules instead of re-deriving them.",
+  "run_id": "aug2026",
+  "fresh_session_per_repetition": true,
+  "logged_out_or_clean_account": "chatgpt/claude: persistent free-tier login, temporary/incognito chat mode per repetition (no logout cycle). gemini/perplexity/ai_overview: fresh throwaway browser profile per repetition (fully logged out).",
+  "location_setting": null,
+  "no_system_prompt": true,
+  "no_custom_instructions": true,
+  "no_follow_up_turns": true,
+  "default_model_tier_only": true,
+  "max_calls_per_invocation": 200,
+  "engines": ["chatgpt", "claude", "gemini", "perplexity", "ai_overview"]
+}
