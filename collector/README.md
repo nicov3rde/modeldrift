@@ -64,6 +64,33 @@ chatgpt/gemini/etc, since they don't need login, but the claude login step
 is what matters, and cookies persist in `browser_profile/claude` after.
 From then on claude reuses the saved cookies with no re-login prompt.
 
+## Getting the windows out of your way (Windows only)
+
+Since headed is mandatory, `_desktop_watcher.ps1` keeps the collector's
+windows off your actual desktop without hiding them from the OS (hiding
+would mean headless, which is the thing that gets blocked). It uses the
+community `VirtualDesktop` PowerShell module to create a "ModelDrift"
+virtual desktop, then polls for Chrome processes carrying
+`--remote-debugging-port=` (a flag only Playwright/browser_use sets - never
+present on a normal user-launched Chrome) and relocates each one there the
+instant its window exists, before it's even navigated anywhere. Confirmed
+2026-08-11 that composers still mount fine on a window relocated before
+page load - it's not a page-visibility/throttling problem.
+
+```powershell
+Install-Module VirtualDesktop -Scope CurrentUser -Force   # one-time; needs NuGet
+                                                            # provider bootstrapped first if this errors:
+                                                            # Install-PackageProvider NuGet -Force -Scope CurrentUser
+Import-Module VirtualDesktop
+$d = New-Desktop
+Set-DesktopName -Desktop $d -Name "ModelDrift"
+powershell -NoProfile -ExecutionPolicy Bypass -File .\_desktop_watcher.ps1   # run in the background, leave it running
+```
+
+Then run the collector normally in another terminal. Your own desktop stays
+clear the whole time; switch to "ModelDrift" (Task View, or Win+Ctrl+Right/
+Left) whenever you want to check on it.
+
 ## Running it
 
 ```

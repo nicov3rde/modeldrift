@@ -14,6 +14,11 @@ collector/debug/
 collector/scratch/
 collector/.gcp/
 collector/run_config.json
+
+# Dry-run test output is never real findings - keep it out of the public
+# repo. Only the real aug2026/oct2026/dec2026 (no _dry suffix) files publish.
+data/runs/*_dry.jsonl
+data/exports/*_dry_*.csv
 collector/__pycache__/
 
 # Byte-compiled / optimized / DLL files

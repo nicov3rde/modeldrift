@@ -42,7 +42,28 @@ RUNS_DIR = Path(__file__).resolve().parent.parent / "data" / "runs"
 QUESTION_TEXT_BY_ID = {item["id"]: item["text"] for item in q.ALL_QUESTIONS}
 
 
+def _ai_overview_text(soup):
+    """ai_overview has no chat transcript to select from - it's a Google SERP
+    panel, not a conversation. Best-effort: walk up from the "Show more AI
+    Overview" toggle (the one marker collect_v0.py validated) far enough to
+    capture the panel's own text, without also pulling in unrelated SERP
+    chrome below/around it. Approximate by construction - same caveat as
+    _CITATION_STRATEGIES["ai_overview"] below: spot-check against the saved
+    screenshot before trusting this for anything beyond a rough read."""
+    toggle = soup.select_one('div[aria-label="Show more AI Overview"]')
+    if not toggle:
+        return ""
+    container = toggle
+    for _ in range(6):
+        if container.parent is None:
+            break
+        container = container.parent
+    return container.get_text(" ", strip=True)
+
+
 def _answer_text(soup, engine):
+    if engine == "ai_overview":
+        return _ai_overview_text(soup)
     config = c.ENGINE_CONFIGS[engine]
     nodes = soup.select(config["assistant_message_selector"])
     return nodes[-1].get_text(" ", strip=True) if nodes else ""
