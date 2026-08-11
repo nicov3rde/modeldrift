@@ -80,7 +80,12 @@ RUN_DATE = date.today().isoformat()          # one date per session, not per row
 RAW_DIR = Path("raw") / RUN_DATE
 RAW_DIR.mkdir(parents=True, exist_ok=True)
 
-HEADLESS = False  # first run needs a visible window so you can log in by hand
+# Headless by default: chatgpt/gemini/perplexity/ai_overview never need a
+# human (no login exists for any of them), and claude only needed one for
+# its one-time login - once browser_profile/claude has real cookies on disk,
+# a visible window buys nothing. main() flips this to False when --headed is
+# passed, for a fresh claude login or debugging a UI change by eye.
+HEADLESS = True
 
 # Claude is the ONE engine that persists login cookies in its profile_dir so
 # you don't have to sign in every run (claude.ai has no anonymous/guest mode
@@ -731,11 +736,20 @@ def _cli():
         "--run-id", default=None,
         help="Override run_config.json's run_id for this invocation only.",
     )
+    parser.add_argument(
+        "--headed", action="store_true",
+        help="Show the browser window. Only needed for a fresh claude login (its cookies are gone or "
+             "were never saved) or to debug a UI change by eye - every other engine and every "
+             "already-logged-in claude call runs perfectly well headless, which is the default.",
+    )
     return parser.parse_args()
 
 
 async def main():
     args = _cli()
+    if args.headed:
+        global HEADLESS
+        HEADLESS = False
     run_config = load_run_config()
     if args.run_id:
         run_config["run_id"] = args.run_id

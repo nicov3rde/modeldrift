@@ -42,15 +42,26 @@ personalization and clear any existing memories, since Claude retains those
 server-side on the account regardless of which browser profile connects to
 it.
 
-The first time you run against `claude`, a real browser window opens and
-waits (up to 5 minutes) for you to log in by hand. After that, cookies
-persist in `browser_profile/claude` and you won't be prompted again unless
-the session expires.
+Everything runs headless by default (no visible window) since nothing needs
+a human once claude is logged in. For that first claude login, pass
+`--headed` so a real browser window opens and waits (up to 5 minutes) for
+you to log in by hand:
+
+```
+python collect_v0.py --headed --dry-run --max-calls 1   # opens a window just to get claude logged in
+```
+
+That single headed call is enough: it'll fail on the chatgpt/gemini/etc.
+preflights doing nothing useful (they don't need it), but the claude login
+step is what matters, and cookies persist in `browser_profile/claude` after.
+From then on, run everything headless, including claude: it reuses the
+saved cookies with no window at all, freeing your screen for anything else
+while the run continues in the background.
 
 ## Running it
 
 ```
-python collect_v0.py --dry-run          # 105 calls: 21 questions x 5 engines x 1 rep
+python collect_v0.py --dry-run          # 105 calls: 21 questions x 5 engines x 1 rep, headless
 python extract.py aug2026_dry            # turns raw captures into data/runs/aug2026_dry.jsonl
 python export.py aug2026_dry             # data/exports/aug2026_dry_flat.csv + _presence.csv
 ```
