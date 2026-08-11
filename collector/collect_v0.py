@@ -456,6 +456,15 @@ async def collect_one(query, engine, run_id=None, capture_id=None):
             await safe_call(lambda: page.goto(config["url"]), timeout=30, retries=2)
             await asyncio.sleep(2.0)  # let initial hydration/re-render settle before touching the DOM
 
+            # Explicit, generous wait for a human to log in on a cold profile -
+            # _type_and_queue_submit's own composer lookups use a short 15s
+            # timeout (that's for React-staleness retries, not a login wait),
+            # so without this gate a not-yet-logged-in session fails in ~80s
+            # total instead of the ~5 minutes the profile-prep comments promise.
+            composer = await _find_composer(page, config, timeout=300.0)
+            if composer is None:
+                raise RuntimeError(f"login timed out - no composer appeared for {config['name']} after 5 minutes")
+
             await _submit_query(page, config, query)
 
             got_answer = await _wait_for_response(page, config)
@@ -523,6 +532,9 @@ async def _preflight_check_retrieval_marker(engine):
         else:
             await safe_call(lambda: page.goto(config["url"]), timeout=30, retries=2)
             await asyncio.sleep(2.0)
+            composer = await _find_composer(page, config, timeout=300.0)  # see collect_one's login-wait comment
+            if composer is None:
+                raise RuntimeError(f"login timed out - no composer appeared for {config['name']} after 5 minutes")
             await _submit_query(page, config, config["preflight_query"])
             await _wait_for_response(page, config)
             html = await safe_call(lambda: page.evaluate("() => document.documentElement.outerHTML"), timeout=CDP_TIMEOUT, default="")
