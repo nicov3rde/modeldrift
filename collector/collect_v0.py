@@ -82,14 +82,25 @@ RAW_DIR.mkdir(parents=True, exist_ok=True)
 
 HEADLESS = False  # first run needs a visible window so you can log in by hand
 
-# Persistent login cookies live in each engine's own profile_dir so you don't
-# have to sign in every run. Isolation between queries comes from a fresh
-# conversation/temporary-chat mode and a fresh browser process per
-# collect_one call, not from wiping this profile.
+# Claude is the ONE engine that persists login cookies in its profile_dir so
+# you don't have to sign in every run (claude.ai has no anonymous/guest mode
+# at all - confirmed 2026-08-11, it's a hard sign-in wall). Every other
+# engine wipes its profile_dir before every single call (fresh_profile:
+# True) and is reached fully logged out. For Claude specifically, isolation
+# between repetitions comes from a fresh conversation each time, not from
+# wiping the profile - so memory and personalization must be turned off and
+# cleared by hand in the account before a real run (see collector/README.md).
 ENGINE_CONFIGS = {
     "chatgpt": {
         "name": "ChatGPT",
         "profile_dir": Path("browser_profile") / "chatgpt",
+        # Confirmed 2026-08-11 (see the screenshot from _probe_anon.py, since
+        # deleted): chatgpt.com's Temporary Chat mode gives a fully anonymous
+        # session a real, usable composer - no login wall, no account. Logged
+        # out here matches gemini/perplexity/ai_overview: no memory, no
+        # personalization, nothing to toggle off or clear, by construction
+        # rather than by remembering to configure it correctly.
+        "fresh_profile": True,
         "url": "https://chatgpt.com/?model=auto&temporary-chat=true",
         "composer_selectors": ["#prompt-textarea", 'div[contenteditable="true"]'],
         "send_button_selector": 'button[data-testid="send-button"]',
@@ -194,7 +205,18 @@ ENGINE_CONFIGS = {
         # definition - no "answered without search" case exists here, unlike
         # a chat engine. retrieval == whether the overview appeared at all.
         "retrieval_markers": ['aria-label="Show more AI Overview"'],
-        "preflight_query": "What is today's top news headline in the US?",
+        # Different preflight_query than the other four engines, deliberately.
+        # The shared "top news headline" query is real-time/breaking-news
+        # content, and Google evidently doesn't wrap that in an AI Overview
+        # panel AT ALL - re-probed 2026-08-11 (see _explore_aio.py) and found
+        # neither marker present, not even the "not available" fallback,
+        # because the panel never mounts for that query type. A paired probe
+        # against "what is the capital of France" (evergreen, always
+        # overview-eligible historically) confirmed both markers still fire
+        # exactly as designed; a nonsense control query correctly showed
+        # neither. The markers were never broken - the preflight query choice
+        # was wrong for this one engine.
+        "preflight_query": "what is the capital of France",
     },
 }
 

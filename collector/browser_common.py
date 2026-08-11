@@ -18,7 +18,7 @@ per file:
 import asyncio
 import sys
 
-sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
 
 CDP_CALL_TIMEOUT = 15.0
 CDP_CALL_RETRIES = 3

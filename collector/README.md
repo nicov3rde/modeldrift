@@ -24,19 +24,27 @@ that this can't stay implicit, or it'll bite you in the December re-run.
 it's the local, possibly-machine-specific file the runner actually reads.
 `run_config.template.json` is the committed, shareable shape.
 
-## First run: log in by hand
+## First run: log in by hand (Claude only)
 
-ChatGPT and Claude use a persistent profile (`browser_profile/chatgpt`,
-`browser_profile/claude`) so you don't have to sign in every session; each
-*repetition* still gets a fresh conversation via each platform's own
-temporary/incognito-chat mode, not a full logout. Gemini, Perplexity, and
-Google AI Overviews use a fresh throwaway profile every single call (fully
-logged out), Gemini specifically because Google's bot detection blocks a
-persisted automated login from surviving at all, confirmed empirically.
+Four of the five engines run fully logged out with a fresh throwaway profile
+every single call: ChatGPT (confirmed 2026-08-11: chatgpt.com's Temporary
+Chat mode gives a real, usable composer with no account at all), Gemini
+(Google's bot detection blocks a persisted automated login from surviving,
+confirmed empirically), Perplexity, and Google AI Overviews. Nothing to log
+into, nothing to clear, by construction.
 
-The first time you run against `chatgpt` or `claude`, a real browser window
-opens and waits (up to 5 minutes) for you to log in by hand. After that,
-cookies persist in `browser_profile/` and you won't be prompted again unless
+Claude has no anonymous or guest mode at all, so it's the one exception: a
+persistent profile (`browser_profile/claude`) holds a real account login so
+you don't have to sign in every session, and each *repetition* still gets a
+fresh conversation via Claude's own temporary-chat mode, not a full logout.
+Before your first real run, log in, then in Settings turn off memory and
+personalization and clear any existing memories, since Claude retains those
+server-side on the account regardless of which browser profile connects to
+it.
+
+The first time you run against `claude`, a real browser window opens and
+waits (up to 5 minutes) for you to log in by hand. After that, cookies
+persist in `browser_profile/claude` and you won't be prompted again unless
 the session expires.
 
 ## Running it

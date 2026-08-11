@@ -2,7 +2,7 @@
   "_comment": "Copy this to run_config.json (gitignored) and fill in location before the first real run. run_config.json is what the runner actually reads; this template is the committed, shareable shape so October/December start from the same frozen rules instead of re-deriving them.",
   "run_id": "aug2026",
   "fresh_session_per_repetition": true,
-  "logged_out_or_clean_account": "chatgpt/claude: persistent free-tier login, temporary/incognito chat mode per repetition (no logout cycle). gemini/perplexity/ai_overview: fresh throwaway browser profile per repetition (fully logged out).",
+  "logged_out_or_clean_account": "claude: persistent account login (no anonymous mode exists), memory/personalization off and cleared, temporary chat per repetition. chatgpt/gemini/perplexity/ai_overview: fresh throwaway browser profile per repetition, fully logged out, no account at all.",
   "location_setting": null,
   "no_system_prompt": true,
   "no_custom_instructions": true,
