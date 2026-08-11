@@ -80,12 +80,15 @@ RUN_DATE = date.today().isoformat()          # one date per session, not per row
 RAW_DIR = Path("raw") / RUN_DATE
 RAW_DIR.mkdir(parents=True, exist_ok=True)
 
-# Headless by default: chatgpt/gemini/perplexity/ai_overview never need a
-# human (no login exists for any of them), and claude only needed one for
-# its one-time login - once browser_profile/claude has real cookies on disk,
-# a visible window buys nothing. main() flips this to False when --headed is
-# passed, for a fresh claude login or debugging a UI change by eye.
-HEADLESS = True
+# Headed by default. Tried headless 2026-08-11: chatgpt.com served a
+# Cloudflare "Verifying..." challenge in headless mode that never appeared
+# headed (confirmed via screenshot - #prompt-textarea was 0/0 headless, 1/1
+# headed). That's a real anti-automation checkpoint, not a timing issue, and
+# it's not this project's place to try to defeat it with stealth/fingerprint
+# patches - so headed stays the default despite the screen-space cost.
+# main() flips this to True when --headless is passed, as an explicit,
+# eyes-open opt-in per engine/session if you want to try it anyway.
+HEADLESS = False
 
 # Claude is the ONE engine that persists login cookies in its profile_dir so
 # you don't have to sign in every run (claude.ai has no anonymous/guest mode
@@ -737,19 +740,19 @@ def _cli():
         help="Override run_config.json's run_id for this invocation only.",
     )
     parser.add_argument(
-        "--headed", action="store_true",
-        help="Show the browser window. Only needed for a fresh claude login (its cookies are gone or "
-             "were never saved) or to debug a UI change by eye - every other engine and every "
-             "already-logged-in claude call runs perfectly well headless, which is the default.",
+        "--headless", action="store_true",
+        help="Hide the browser window. Confirmed 2026-08-11 that chatgpt.com serves a Cloudflare "
+             "bot-check in headless mode that never appears headed - this may fail engine(s) that "
+             "worked fine headed. Opt-in and eyes-open, not the default.",
     )
     return parser.parse_args()
 
 
 async def main():
     args = _cli()
-    if args.headed:
+    if args.headless:
         global HEADLESS
-        HEADLESS = False
+        HEADLESS = True
     run_config = load_run_config()
     if args.run_id:
         run_config["run_id"] = args.run_id

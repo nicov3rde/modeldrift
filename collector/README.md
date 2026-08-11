@@ -42,26 +42,32 @@ personalization and clear any existing memories, since Claude retains those
 server-side on the account regardless of which browser profile connects to
 it.
 
-Everything runs headless by default (no visible window) since nothing needs
-a human once claude is logged in. For that first claude login, pass
-`--headed` so a real browser window opens and waits (up to 5 minutes) for
-you to log in by hand:
+**Runs headed (a visible browser window) by default, on purpose.** Tried
+headless on 2026-08-11: chatgpt.com served a real Cloudflare "Verifying..."
+bot-check page in headless mode that never appeared headed (screenshot
+confirmed: composer present headed, absent headless). That's a genuine
+anti-automation checkpoint, and this project isn't going to try to defeat it
+with stealth/fingerprint-spoofing patches - so a visible window is the
+accepted cost, not a bug. A `--headless` flag exists if you want to try it
+for a specific engine anyway, but treat it as experimental per-engine, not a
+default worth relying on.
+
+For the claude login, just run normally - a real browser window opens and
+waits (up to 5 minutes) for you to log in by hand:
 
 ```
-python collect_v0.py --headed --dry-run --max-calls 1   # opens a window just to get claude logged in
+python collect_v0.py --dry-run --max-calls 1   # opens a window, gets claude logged in
 ```
 
-That single headed call is enough: it'll fail on the chatgpt/gemini/etc.
-preflights doing nothing useful (they don't need it), but the claude login
-step is what matters, and cookies persist in `browser_profile/claude` after.
-From then on, run everything headless, including claude: it reuses the
-saved cookies with no window at all, freeing your screen for anything else
-while the run continues in the background.
+That's enough: it'll also open (and do nothing useful with) windows for
+chatgpt/gemini/etc, since they don't need login, but the claude login step
+is what matters, and cookies persist in `browser_profile/claude` after.
+From then on claude reuses the saved cookies with no re-login prompt.
 
 ## Running it
 
 ```
-python collect_v0.py --dry-run          # 105 calls: 21 questions x 5 engines x 1 rep, headless
+python collect_v0.py --dry-run          # 105 calls: 21 questions x 5 engines x 1 rep
 python extract.py aug2026_dry            # turns raw captures into data/runs/aug2026_dry.jsonl
 python export.py aug2026_dry             # data/exports/aug2026_dry_flat.csv + _presence.csv
 ```
@@ -110,3 +116,7 @@ loop moves on.
 - No spend cap exists because there's no per-call API cost (this drives real
   browser sessions against free-tier consumer accounts, not paid APIs). The
   safety limit instead is `max_calls_per_invocation`.
+- Headless mode is blocked by Cloudflare on at least chatgpt.com (confirmed
+  2026-08-11). A real run currently means a visible browser window for its
+  full duration; there's no headless fix planned that doesn't involve
+  stealth/fingerprint patches this project isn't going to add.
