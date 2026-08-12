@@ -1,0 +1,20 @@
+services:
+  collector:
+    build:
+      context: .
+      dockerfile: collector/Dockerfile
+    # Chrome needs more than Docker's default 64MB /dev/shm or it crashes
+    # under normal use - this is a well-known Chrome-in-Docker gotcha, not
+    # specific to this project.
+    shm_size: "2gb"
+    volumes:
+      # Login cookies and raw captures persist on the host, same paths the
+      # non-Docker README already documents - nothing Docker-specific to
+      # relearn if you go back to running it directly on Windows.
+      - ./collector/browser_profile:/app/collector/browser_profile
+      - ./collector/raw:/app/collector/raw
+      - ./collector/run_config.json:/app/collector/run_config.json:ro
+      - ./data/runs:/app/data/runs
+      - ./data/exports:/app/data/exports
+    # Override with: docker compose run collector python collect_v0.py ...
+    command: ["python", "collect_v0.py", "--dry-run", "--max-calls", "1"]

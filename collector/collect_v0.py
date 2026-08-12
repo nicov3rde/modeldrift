@@ -29,6 +29,7 @@ import asyncio
 import base64
 import hashlib
 import json
+import os
 import re
 import shutil
 import time
@@ -89,6 +90,13 @@ RAW_DIR.mkdir(parents=True, exist_ok=True)
 # main() flips this to True when --headless is passed, as an explicit,
 # eyes-open opt-in per engine/session if you want to try it anyway.
 HEADLESS = False
+
+# Unset (None) on Windows: browser_use auto-detects the real system Chrome
+# (confirmed 2026-08-11 via a running-process check) and that's exactly what
+# we want, don't override it. Set in the Docker image (see Dockerfile) to
+# pin the Linux container's installed Chrome explicitly rather than relying
+# on the same auto-detection working identically cross-platform.
+CHROME_EXECUTABLE_PATH = os.environ.get("CHROME_EXECUTABLE_PATH") or None
 
 # Claude is the ONE engine that persists login cookies in its profile_dir so
 # you don't have to sign in every run (claude.ai has no anonymous/guest mode
@@ -467,6 +475,7 @@ async def collect_one(query, engine, run_id=None, capture_id=None):
 
     session = BrowserSession(
         headless=HEADLESS,
+        executable_path=CHROME_EXECUTABLE_PATH,
         user_data_dir=str(config["profile_dir"]),
         keep_alive=False,
         enable_default_extensions=False,  # their content scripts were mutating the DOM mid-interaction
@@ -549,6 +558,7 @@ async def _preflight_check_retrieval_marker(engine):
     _prepare_profile_dir(config)
     session = BrowserSession(
         headless=HEADLESS,
+        executable_path=CHROME_EXECUTABLE_PATH,
         user_data_dir=str(config["profile_dir"]),
         keep_alive=False,
         enable_default_extensions=False,

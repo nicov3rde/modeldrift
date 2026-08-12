@@ -1,0 +1,13 @@
+node_modules
+dist
+.astro
+.git
+.venv
+
+collector/browser_profile
+collector/raw
+collector/debug
+collector/scratch
+collector/.gcp
+collector/run_config.json
+collector/__pycache__
