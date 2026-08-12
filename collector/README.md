@@ -91,6 +91,38 @@ Then run the collector normally in another terminal. Your own desktop stays
 clear the whole time; switch to "ModelDrift" (Task View, or Win+Ctrl+Right/
 Left) whenever you want to check on it.
 
+## Or: run it in Docker instead
+
+`Dockerfile` runs Chrome headed (no `--headless` flag) against a virtual X
+display (Xvfb) inside the container, same trick as the virtual-desktop
+approach above, just fully out of sight rather than parked on another
+desktop. Confirmed working 2026-08-12.
+
+**Important: build and run this from a path that is NOT inside a
+OneDrive/Dropbox/cloud-synced folder.** Confirmed 2026-08-12 that OneDrive's
+Files-On-Demand reparse points break Docker Desktop's WSL2 build-context
+reader outright (`invalid file request <file>`), and are suspected of
+contributing to a folder-wipe incident under heavy Chrome-profile file
+churn. This repo now lives at `C:\Users\nverde\dev\modeldrift` for exactly
+this reason - clone here, not back into OneDrive.
+
+```
+docker compose build
+docker compose run --rm collector python collect_v0.py --dry-run --max-calls 1
+```
+
+Volumes keep `browser_profile/`, `raw/`, and `data/runs` + `data/exports`
+on the host at the same paths the non-Docker instructions already use, so
+nothing else changes.
+
+**Claude still needs its own login inside the container specifically** -
+Windows Chrome's cookies are DPAPI-encrypted and won't decrypt on Linux, so
+the `browser_profile/claude` you logged into on the host doesn't carry over.
+Until that's set up (would need VNC or similar to see the container's
+virtual display for a one-time login), the practical split is: run
+chatgpt/gemini/perplexity/ai_overview in Docker (all logged-out, zero setup),
+keep claude on the host with the virtual-desktop trick above.
+
 ## Running it
 
 ```
