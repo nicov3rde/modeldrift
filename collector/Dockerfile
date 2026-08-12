@@ -10,14 +10,8 @@
 # Not from collector/ itself - see docker-compose.yml for the normal path in.
 FROM python:3.11-slim-bookworm
 
-# xauth: required by xvfb-run for X authority handling.
-# x11-utils: provides xdpyinfo, which xvfb-run polls to confirm the X server
-#   is actually up before launching the wrapped command - without it,
-#   xvfb-run starts Xvfb fine but hangs forever before ever running python
-#   (confirmed 2026-08-11: docker exec showed Xvfb running, zero python
-#   process, `which xdpyinfo` -> not found).
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        xvfb xauth x11-utils wget gnupg ca-certificates \
+        xvfb wget gnupg ca-certificates \
     && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
     && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
         > /etc/apt/sources.list.d/google-chrome.list \
@@ -37,7 +31,8 @@ ENV CHROME_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
 COPY collector/ collector/
 COPY data/ data/
+RUN chmod +x collector/docker-entrypoint.sh
 
 WORKDIR /app/collector
-ENTRYPOINT ["xvfb-run", "-a", "--server-args=-screen 0 1920x1080x24"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["python", "collect_v0.py", "--dry-run", "--max-calls", "1"]
